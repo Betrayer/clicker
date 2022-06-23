@@ -1,9 +1,13 @@
 import React, { FC } from "react";
 import "./index.scss";
 
-const Target: FC = () => {
+interface TargetProps {
+  clickCounter: () => void;
+}
+
+const Target: FC<TargetProps> = ({ clickCounter }) => {
   return (
-    <div className="target">
+    <div className="target" onClick={clickCounter}>
       <span>click me</span>
     </div>
   );
