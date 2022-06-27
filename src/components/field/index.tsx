@@ -1,18 +1,22 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setScore } from "../../redux/actions/score";
+import { RootState } from "../../redux/rootReducer";
 import Target from "../target";
 import "./index.scss";
 
 const Field: FC = () => {
-  const [clicks, setClicks] = useState(0);
+  const currentScore = useSelector((state: RootState) => state.score.score);
+  const dispatch = useDispatch();
 
-  const clickCounter = () => {
-    setClicks(clicks + 1);
+  const handleClick = () => {
+    dispatch(setScore(currentScore + 1));
   };
 
   return (
     <section className="field">
       <span>i am field</span>
-      <Target clickCounter={clickCounter} />
+      <Target handleClick={handleClick} />
     </section>
   );
 };
