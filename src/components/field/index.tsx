@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setScore } from "../../redux/actions/score";
 import { RootState } from "../../redux/rootReducer";
@@ -8,15 +8,15 @@ import "./index.scss";
 const Field: FC = () => {
   const currentScore = useSelector((state: RootState) => state.score.score);
   const dispatch = useDispatch();
+  const isTarget = useRef(null);
 
   const handleClick = () => {
-    dispatch(setScore(currentScore + 1));
+    isTarget.current && dispatch(setScore(currentScore + 1));
   };
 
   return (
     <section className="field">
-      <span>i am field</span>
-      <Target handleClick={handleClick} />
+      <Target handleClick={handleClick} isTarget={isTarget} />
     </section>
   );
 };

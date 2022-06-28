@@ -3,13 +3,17 @@ import "./index.scss";
 
 interface TargetProps {
   handleClick: () => void;
+  isTarget: any;
 }
 
-const Target: FC<TargetProps> = ({ handleClick }) => {
+const Target: FC<TargetProps> = ({ handleClick, isTarget }) => {
   return (
-    <div className="target" onClick={handleClick}>
-      <span>click me</span>
-    </div>
+    <div
+      ref={isTarget}
+      style={{ top: 294, left: 565 }}
+      className="target"
+      onClick={handleClick}
+    />
   );
 };
 
