@@ -1,8 +1,9 @@
 export const SET_SCORE = "SET_SCORE";
 
-export type SetScore = {
+export type SetScoreAction = {
   type: typeof SET_SCORE;
   payload: number;
+  callback: () => void;
 };
 
-export type ScoreActions = SetScore;
+export type ScoreActions = SetScoreAction;

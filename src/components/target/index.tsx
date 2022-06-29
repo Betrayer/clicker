@@ -10,7 +10,7 @@ const Target: FC<TargetProps> = ({ handleClick, isTarget }) => {
   return (
     <div
       ref={isTarget}
-      style={{ top: 294, left: 565 }}
+      style={{ top: "50%", left: "50%" }}
       className="target"
       onClick={handleClick}
     />

@@ -1,5 +1,6 @@
 import React, { FC, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { randomizer } from "../../helpers/tools";
 import { setScore } from "../../redux/actions/score";
 import { RootState } from "../../redux/rootReducer";
 import Target from "../target";
@@ -10,8 +11,11 @@ const Field: FC = () => {
   const dispatch = useDispatch();
   const isTarget = useRef(null);
 
-  const handleClick = () => {
-    isTarget.current && dispatch(setScore(currentScore + 1));
+  const handleClick = (): void => {
+    const callback = () => {
+      randomizer(window.innerWidth, window.innerHeight);
+    };
+    isTarget.current && dispatch(setScore(currentScore + 1, callback));
   };
 
   return (
