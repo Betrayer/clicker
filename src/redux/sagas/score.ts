@@ -1,13 +1,23 @@
-import { all, AllEffect, call, put, takeLatest } from "redux-saga/effects";
+import {
+  all,
+  AllEffect,
+  call,
+  delay,
+  put,
+  takeLatest,
+} from "redux-saga/effects";
+import { isHit } from "../actions/target";
 import { SetScoreAction, SET_SCORE } from "../actionTypes/score";
 
 function* randomCoords(action: SetScoreAction) {
   try {
-    action.callback();
+    yield put(isHit(true));
+    yield call(action.callback);
   } catch (error) {
     alert(error);
   } finally {
-    console.log("success");
+    yield delay(500);
+    yield put(isHit(false));
   }
 }
 

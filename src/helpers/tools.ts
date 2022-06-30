@@ -1,8 +1,9 @@
-export const randomizer = (width: number, height: number) => {
+import { CoordsData } from "../types";
+
+export const randomizer = (width: number, height: number): CoordsData => {
   const randomResult = {
-    width: Math.floor(Math.random() * (width - 0 + 1)) + 0,
-    height: Math.floor(Math.random() * (height - 0 + 1)) + 0,
+    width: Math.floor(Math.random() * (width - 30 + 1)) + 30,
+    height: Math.floor(Math.random() * (height - 30 + 1)) + 30,
   };
-  console.log(randomResult);
   return randomResult;
 };
