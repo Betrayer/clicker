@@ -1,10 +1,12 @@
 import React, { FC } from 'react';
-import Main from './components/Main/Main';
+import Header from './components/Header/Header';
+import Field from './components/Field/Field';
 
 const App: FC = () => {
 	return (
 		<>
-			<Main />
+			<Header />
+			<Field />
 		</>
 	);
 };

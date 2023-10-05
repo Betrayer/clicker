@@ -1,0 +1,8 @@
+@use '../../variables/variables';
+
+.header {
+	position: fixed;
+	height: variables.$headerHeight;
+	width: 100%;
+    background-color: #fff;
+}
