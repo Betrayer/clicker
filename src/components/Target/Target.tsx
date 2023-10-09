@@ -3,7 +3,7 @@ import './index.scss';
 import React, { FC, useEffect, useState } from 'react';
 
 import { handleRandomCoordinates } from '../../helpers/coordinates';
-import targetSize from '../../constants/_target.module.scss';
+import targetSize from '../../variables/_target.module.scss';
 import { useDimensions } from '../../hooks/useDimensions';
 
 const Target: FC = () => {
