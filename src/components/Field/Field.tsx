@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
 import './index.scss';
+import Target from '../Target/Target';
 
 const Field: FC = () => {
 	return (
 		<section className='field'>
-			<span>123</span>
+			<Target />
 		</section>
 	);
 };
