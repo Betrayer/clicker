@@ -1,36 +1,16 @@
 import './index.scss';
 
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 
-import { handleRandomCoordinates } from '../../helpers/coordinates';
+import { ICoordinates } from '../../types/Target';
 import targetSize from '../../variables/_target.module.scss';
-import { useDimensions } from '../../hooks/useDimensions';
 
-const Target: FC = () => {
-	const { dimensions } = useDimensions();
+interface ITarget {
+	coordinates: ICoordinates;
+	handleClick: () => void;
+}
 
-	const minHeight = 100;
-	const maxHeight = dimensions.height - 100;
-	const minWidth = 0;
-	const maxWidth = dimensions.width - 100;
-
-	useEffect(() => {
-		randomCoordinates();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	const [coordinates, setCoordinates] = useState({
-		top: 0,
-		left: 0,
-	});
-
-	const randomCoordinates = () => {
-		setCoordinates({
-			top: handleRandomCoordinates(minHeight, maxHeight),
-			left: handleRandomCoordinates(minWidth, maxWidth),
-		});
-	};
-
+const Target: FC<ITarget> = ({ coordinates, handleClick }) => {
 	return (
 		<div
 			className='target'
@@ -40,12 +20,8 @@ const Target: FC = () => {
 				height: targetSize.targetSize,
 				width: targetSize.targetSize,
 			}}
-			onClick={randomCoordinates}
-		>
-			<span>
-				{coordinates.top}|{coordinates.left}
-			</span>
-		</div>
+			onClick={handleClick}
+		/>
 	);
 };
 
