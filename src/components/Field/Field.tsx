@@ -14,21 +14,47 @@ const Field: FC = () => {
 
 	const dispatch = useDispatch();
 
+	const [remainingTime, setRemainingTime] = useState<number | null>(null);
+	const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
 	const [coordinates, setCoordinates] = useState<ICoordinates>({
 		top: 0,
 		left: 0,
 	});
 
-	const [debouncedFunction, setDebouncedFunction] = useState<NodeJS.Timeout | null>(null);
+	// const [debouncedFunction, setDebouncedFunction] =
+	// 	useState<NodeJS.Timeout | null>(null);
 
 	const debounce = (fn: () => void, delay: number) => {
-		if (debouncedFunction) {
-			clearTimeout(debouncedFunction);
+		// if (debouncedFunction) {
+		// 	clearTimeout(debouncedFunction);
+		// }
+		// const timeoutId = setTimeout(() => {
+		// 	fn();
+		// }, delay);
+		// setDebouncedFunction(timeoutId);
+		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+		// setRemainingTime(delay);
+		if (intervalId) {
+			clearInterval(intervalId as NodeJS.Timeout);
 		}
-		const timeoutId = setTimeout(() => {
-			fn();
-		}, delay);
-		setDebouncedFunction(timeoutId);
+
+		const startTime = Date.now();
+		const timeoutId = setInterval(() => {
+			const elapsedTime = Date.now() - startTime;
+			const remaining = Math.max(0, delay - elapsedTime);
+			setRemainingTime(remaining / 1000);
+
+			if (remaining === 0) {
+				if (intervalId) {
+					clearInterval(intervalId as NodeJS.Timeout);
+				}
+				fn();
+				setRemainingTime(null);
+			}
+		}, 100); // Обновляем каждую секунду
+
+		setIntervalId(timeoutId);
+		setRemainingTime(delay / 1000); // Устанавливаем начальное время
 	};
 
 	const handle = () => {
@@ -65,6 +91,9 @@ const Field: FC = () => {
 
 	return (
 		<section className='field'>
+			<span>
+				{remainingTime !== null ? remainingTime.toFixed(1) : `--|--`}
+			</span>
 			<Target coordinates={coordinates} handleClick={handleClick} />
 		</section>
 	);
