@@ -1,4 +1,8 @@
-import { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+
+import { useEffect, useState } from 'react';
+
+import { useAppSelector } from './useAppSelector';
 
 export interface IUseTargetRefresh {
 	refresh: (fn: () => void, delay: number) => void;
@@ -6,30 +10,60 @@ export interface IUseTargetRefresh {
 }
 
 export const useTargetRefresh = (): IUseTargetRefresh => {
-	const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+	const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
 	const [remainingTime, setRemainingTime] = useState<number | null>(null);
 
+	const { isGameInProgress } = useAppSelector((state) => state.statusSlice);
+
 	const refresh = (fn: () => void, delay: number) => {
-		if (intervalId) {
-			clearInterval(intervalId as NodeJS.Timeout);
+		if (timeoutId) {
+			clearTimeout(timeoutId);
 		}
 
 		const startTime = Date.now();
-		const timeoutId = setInterval(() => {
+		// const timeoutId = setInterval(() => {
+		// 	const elapsedTime = Date.now() - startTime;
+		// 	const remaining = Math.max(0, delay - elapsedTime);
+		// 	setRemainingTime(remaining / 1000);
+
+		// 	if (remaining === 0) {
+		// 		clearInterval(timeoutId);
+		// 		setRemainingTime(null);
+		// 		fn();
+		// 	}
+		// }, 100);
+
+		// setIntervalId(timeoutId);
+		// setRemainingTime(delay / 1000);
+		const checkRemaining = () => {
 			const elapsedTime = Date.now() - startTime;
 			const remaining = Math.max(0, delay - elapsedTime);
 			setRemainingTime(remaining / 1000);
 
 			if (remaining === 0) {
-				clearInterval(timeoutId);
 				setRemainingTime(null);
 				fn();
+			} else {
+				setTimeoutId(setTimeout(checkRemaining, 100));
 			}
-		}, 100);
+		};
 
-		setIntervalId(timeoutId);
-		setRemainingTime(delay / 1000);
+		checkRemaining();
 	};
+
+	useEffect(() => {
+		if (!isGameInProgress) {
+			if (timeoutId) {
+				clearTimeout(timeoutId);
+			}
+			setRemainingTime(0);
+		}
+		return () => {
+			if (timeoutId) {
+				clearTimeout(timeoutId);
+			}
+		};
+	}, [isGameInProgress]);
 
 	return {
 		refresh,

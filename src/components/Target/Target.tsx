@@ -9,14 +9,13 @@ import { useDetect } from '../../hooks/useDetect';
 interface ITarget {
 	coordinates: ICoordinates;
 	handleClick: () => void;
+	callback: () => void;
 }
 
-const Target: FC<ITarget> = ({ coordinates, handleClick }) => {
+const Target: FC<ITarget> = ({ coordinates, handleClick, callback }) => {
 	const targetRef = useRef(null);
 
-	const { isMissed } = useDetect(targetRef);
-
-	console.log(isMissed);
+	useDetect(targetRef, callback);
 
 	return (
 		<div
