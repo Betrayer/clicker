@@ -4,5 +4,17 @@
 	position: fixed;
 	height: variables.$headerHeight;
 	width: 100%;
-    background-color: #fff;
+	background-color: #fff;
+
+	&__wrapper {
+		display: flex;
+		height: 100%;
+		justify-content: space-around;
+		align-items: center;
+	}
+
+	span {
+		font-size: 24px;
+		font-weight: 600;
+	}
 }

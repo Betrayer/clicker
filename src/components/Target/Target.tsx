@@ -1,9 +1,10 @@
 import './index.scss';
 
-import React, { FC } from 'react';
+import React, { FC, useRef } from 'react';
 
 import { ICoordinates } from '../../types/Target';
 import targetSize from '../../variables/_target.module.scss';
+import { useDetect } from '../../hooks/useDetect';
 
 interface ITarget {
 	coordinates: ICoordinates;
@@ -11,8 +12,15 @@ interface ITarget {
 }
 
 const Target: FC<ITarget> = ({ coordinates, handleClick }) => {
+	const targetRef = useRef(null);
+
+	const { isMissed } = useDetect(targetRef);
+
+	console.log(isMissed);
+
 	return (
 		<div
+			ref={targetRef}
 			className='target'
 			style={{
 				top: coordinates.top,

@@ -9,66 +9,32 @@ import { incrementScore } from '../../redux/reducers/score';
 import { useDimensions } from '../../hooks/useDimensions';
 import { useDispatch } from 'react-redux';
 
-const Field: FC = () => {
+interface IField {
+	refresh: (fn: () => void, delay: number) => void;
+}
+
+const Field: FC<IField> = ({ refresh }) => {
 	const { dimensions } = useDimensions();
 
 	const dispatch = useDispatch();
 
-	const [remainingTime, setRemainingTime] = useState<number | null>(null);
-	const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+	const minHeight = 100;
+	const maxHeight = dimensions.height - 100;
+	const minWidth = 0;
+	const maxWidth = dimensions.width - 100;
+
 	const [coordinates, setCoordinates] = useState<ICoordinates>({
 		top: 0,
 		left: 0,
 	});
-
-	// const [debouncedFunction, setDebouncedFunction] =
-	// 	useState<NodeJS.Timeout | null>(null);
-
-	const debounce = (fn: () => void, delay: number) => {
-		// if (debouncedFunction) {
-		// 	clearTimeout(debouncedFunction);
-		// }
-		// const timeoutId = setTimeout(() => {
-		// 	fn();
-		// }, delay);
-		// setDebouncedFunction(timeoutId);
-		// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-		// setRemainingTime(delay);
-		if (intervalId) {
-			clearInterval(intervalId as NodeJS.Timeout);
-		}
-
-		const startTime = Date.now();
-		const timeoutId = setInterval(() => {
-			const elapsedTime = Date.now() - startTime;
-			const remaining = Math.max(0, delay - elapsedTime);
-			setRemainingTime(remaining / 1000);
-
-			if (remaining === 0) {
-				if (intervalId) {
-					clearInterval(intervalId as NodeJS.Timeout);
-				}
-				fn();
-				setRemainingTime(null);
-			}
-		}, 100); // Обновляем каждую секунду
-
-		setIntervalId(timeoutId);
-		setRemainingTime(delay / 1000); // Устанавливаем начальное время
-	};
 
 	const handle = () => {
 		console.log('Функция выполнена');
 	};
 
 	const handleButton = () => {
-		debounce(handle, 2000);
+		refresh(handle, 2000);
 	};
-
-	const minHeight = 100;
-	const maxHeight = dimensions.height - 100;
-	const minWidth = 0;
-	const maxWidth = dimensions.width - 100;
 
 	useEffect(() => {
 		randomCoordinates();
@@ -91,9 +57,6 @@ const Field: FC = () => {
 
 	return (
 		<section className='field'>
-			<span>
-				{remainingTime !== null ? remainingTime.toFixed(1) : `--|--`}
-			</span>
 			<Target coordinates={coordinates} handleClick={handleClick} />
 		</section>
 	);
