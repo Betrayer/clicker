@@ -1,16 +1,19 @@
-import { useEffect, useState } from 'react';
+// import { handleGameStatus } from '../redux/reducers/status';
+// import { useAppDispatch } from './useAppDispatch';
 
-interface IUseDetect {
-	isMissed: boolean;
-}
+import { useEffect } from 'react';
 
-export const useDetect = (ref: React.RefObject<HTMLElement>): IUseDetect => {
-	const [isMissed, setIsMissed] = useState(false);
+export const useDetect = (
+	ref: React.RefObject<HTMLElement>,
+	callback: () => void,
+) => {
+	// const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			if (ref.current && !ref.current.contains(event.target as Node)) {
-				setIsMissed(true);
+				// dispatch(handleGameStatus(false));
+				callback();
 			}
 		};
 
@@ -19,9 +22,6 @@ export const useDetect = (ref: React.RefObject<HTMLElement>): IUseDetect => {
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ref]);
-
-	return {
-		isMissed,
-	};
 };
