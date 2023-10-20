@@ -1,5 +1,28 @@
+@keyframes shrink {
+	0% {
+		transform: scale(1);
+	}
+
+	100% {
+		transform: scale(0.1);
+	}
+}
+
 .target {
-	background-color: #4a1f1d;
+	background-color: #5da21c;
 	position: absolute;
 	cursor: default;
+	border-radius: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&__target {
+		@extend .target;
+		background-color: #d51919;
+	}
+
+	// animation-name: shrink;
+	// animation-duration: 2000ms;
+	// animation-fill-mode: forwards;
 }

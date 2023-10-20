@@ -1,12 +1,23 @@
-import React, { FC } from 'react';
 import './index.scss';
 
-const Header: FC = () => {
+import React, { FC } from 'react';
+
+import { useAppSelector } from '../../hooks/useAppSelector';
+
+interface IHeader {
+	remainingTime: number | null;
+}
+
+const Header: FC<IHeader> = ({ remainingTime }) => {
+	const score = useAppSelector((state) => state.scoreSlice.score);
+
 	return (
 		<header className='header'>
 			<div className='header__wrapper'>
-				<span>1</span>
-				<span>2</span>
+				<span>{score}</span>
+				<span>
+					{remainingTime ? remainingTime.toFixed(1) : '--|--'}
+				</span>
 			</div>
 		</header>
 	);
